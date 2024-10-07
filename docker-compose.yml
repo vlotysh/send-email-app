@@ -1,0 +1,91 @@
+services:
+    mysql:
+        image: mysql:8.0
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        ports:
+            - '3306:3306'
+        env_file:
+            - docker.env
+        volumes:
+            - ./data/mysql:/var/lib/mysql
+    php-fpm:
+        build:
+            context: .
+            dockerfile: docker-images/php-extended/Dockerfile
+        image: "php-fpm"
+        env_file:
+            - docker.env
+        restart: always
+        volumes:
+            - ./docker-images/php-extended/php.ini:/usr/local/etc/php/conf.d/custom.ini
+            - ./:/var/www
+        entrypoint: ["./docker-images/php-extended/docker-entrypoint.sh"]
+        depends_on:
+            - mysql
+            - nginx
+    artisan:
+        build:
+            context: .
+            dockerfile: docker-images/php-extended/Dockerfile
+        image: "php-artisan"
+        env_file:
+            - docker.env
+        restart: always
+        volumes:
+            - ./docker-images/php-extended/php.ini:/usr/local/etc/php/conf.d/custom.ini
+            - ./:/var/www
+    nginx:
+        image: 'nginx:1.20'
+        ports:
+            - '80:80'
+            - '443:443'
+        restart: always
+        volumes:
+            - ./:/var/www
+            - ./docker-images/nginx-extended/default.conf:/etc/nginx/conf.d/default.conf
+            - ./docker-images/nginx-extended/ssl/localhost.crt:/etc/nginx/localhost.crt
+            - ./docker-images/nginx-extended/ssl/localhost.key:/etc/nginx/localhost.key
+    scheduler:
+        build:
+            context: .
+            dockerfile: docker-images/php-extended/Dockerfile
+        container_name: laravel_scheduler
+        volumes:
+            - .:/var/www
+        command: ["sh", "-c", "php artisan schedule:work"]
+        depends_on:
+            - mysql
+            - php-fpm
+    queue:
+        build:
+            context: .
+            dockerfile: docker-images/php-extended/Dockerfile
+        container_name: laravel_queue
+        volumes:
+            - .:/var/www
+        command: ["sh", "-c", " php artisan queue:work --queue=high,default"]
+        depends_on:
+            - mysql
+            - php-fpm
+    redis:
+        image: bitnami/redis:latest
+        user: root
+        env_file:
+            - docker.env
+        volumes:
+            - ./data/redis:/bitnami
+        ports:
+            - '6379:6379'
+    mailcatcher:
+        image: schickling/mailcatcher
+        container_name: mailcatcher
+        ports:
+            - "1080:1080"
+            - "1025:1025"
+    pma:
+        image: 'phpmyadmin/phpmyadmin:latest'
+        ports:
+            - '8090:80'
+        env_file:
+            - docker.env

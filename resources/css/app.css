@@ -1,0 +1,126 @@
+.form-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+.email-form .form-group {
+    margin-bottom: 15px;
+}
+
+.email-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.email-form input[type="email"],
+.email-form input[type="text"],
+.email-form input[type="datetime-local"],
+.email-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.email-form textarea {
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.submit-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #45a049;
+}
+
+.cancel-button {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cancel-button:hover {
+    background-color: #da190b;
+}
+
+.error-message {
+    color: #ff0000;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.create-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.create-button:hover {
+    background-color: #45a049;
+}
+
+.email-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.email-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.edit-button, .delete-button {
+    margin-right: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.edit-button {
+    background-color: #008CBA;
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: #007bb5;
+}
+
+.delete-button {
+    background-color: #f44336;
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: #da190b;
+}
+
+.error-message {
+    color: #ff0000;
+    font-weight: bold;
+}
