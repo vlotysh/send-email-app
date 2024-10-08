@@ -2,17 +2,17 @@
     <div>
         <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
         <button @click="showEmailForm = true" class="create-button">Create Email</button>
-        <EmailForm v-if="showEmailForm" :email="email" :sendNow="sendNow" @closeForm="closeForm" @formSubmitted="reloadEmails"/>
+        <EmailForm v-if="showEmailForm" :email="email" @closeForm="closeForm" @formSubmitted="reloadEmails"/>
         <div>
             <h2>Scheduled Emails</h2>
             <ul v-if="emails && emails.length > 0" class="email-list">
                 <li v-for="email in emails" :key="email.id" class="email-item">
                     <p><strong>Recipient:</strong> {{ email.recipient }}</p>
                     <p><strong>Subject:</strong> {{ email.subject }}</p>
-                    <p><strong>Scheduled Time:</strong> {{ email.scheduled_time }}</p>
+                    <p><strong>Scheduled Time:</strong> {{ new Date(email.scheduled_time).toLocaleString() }}</p>
                     <p><strong>Body:</strong> {{ email.body }}</p>
                     <p><strong>Status:</strong> {{ email.status }}</p>
-                    <!-- check on pending status -->
+                    <!-- check on pending status, edit only for pending -->
                     <button v-if="email.status === 'pending'" @click="editEmail(email)" class="edit-button">Edit</button>
                     <button @click="deleteEmail(email.id)" class="delete-button">Delete</button>
                 </li>
@@ -36,7 +36,6 @@ export default {
         const emails = ref([]);
         const showEmailForm = ref(false);
         const email = ref({ recipient: '', subject: '', body: '', scheduled_time: '' });
-        const sendNow = ref(false);
         const errorMessage = ref('');
 
         const loadEmails = async () => {
@@ -76,7 +75,6 @@ export default {
             emails,
             showEmailForm,
             email,
-            sendNow,
             editEmail,
             deleteEmail,
             closeForm,

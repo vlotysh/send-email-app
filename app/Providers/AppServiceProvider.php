@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
      * Register any application services.
      */
     public function register(): void

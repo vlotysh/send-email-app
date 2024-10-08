@@ -13,6 +13,10 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Exception;
 
+/**
+ * @SuppressWarnings(PHPMD.StaticAccess)
+ * @SuppressWarnings(PHPMD.ShortVariable)
+ */
 class SendEmailJob implements ShouldQueue
 {
     use Dispatchable;

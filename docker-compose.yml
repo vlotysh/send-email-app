@@ -10,10 +10,7 @@ services:
         volumes:
             - ./data/mysql:/var/lib/mysql
     php-fpm:
-        build:
-            context: .
-            dockerfile: docker-images/php-extended/Dockerfile
-        image: "php-fpm"
+        image: vlotyshv/php-fpm:8.2-laravel-minimal
         env_file:
             - docker.env
         restart: always
@@ -24,17 +21,6 @@ services:
         depends_on:
             - mysql
             - nginx
-    artisan:
-        build:
-            context: .
-            dockerfile: docker-images/php-extended/Dockerfile
-        image: "php-artisan"
-        env_file:
-            - docker.env
-        restart: always
-        volumes:
-            - ./docker-images/php-extended/php.ini:/usr/local/etc/php/conf.d/custom.ini
-            - ./:/var/www
     nginx:
         image: 'nginx:1.20'
         ports:
@@ -47,24 +33,31 @@ services:
             - ./docker-images/nginx-extended/ssl/localhost.crt:/etc/nginx/localhost.crt
             - ./docker-images/nginx-extended/ssl/localhost.key:/etc/nginx/localhost.key
     scheduler:
-        build:
-            context: .
-            dockerfile: docker-images/php-extended/Dockerfile
+        image: vlotyshv/php-fpm:8.2-laravel-minimal
         container_name: laravel_scheduler
+        restart: always
         volumes:
             - .:/var/www
         command: ["sh", "-c", "php artisan schedule:work"]
         depends_on:
             - mysql
             - php-fpm
-    queue:
-        build:
-            context: .
-            dockerfile: docker-images/php-extended/Dockerfile
-        container_name: laravel_queue
+    toolbox:
+        image: vlotyshv/php-fpm:8.2-laravel-minimal
+        container_name: laravel_toolbox
+        restart: always
         volumes:
             - .:/var/www
-        command: ["sh", "-c", " php artisan queue:work --queue=high,default"]
+        depends_on:
+            - mysql
+            - php-fpm
+    queue:
+        image: vlotyshv/php-fpm:8.2-laravel-minimal
+        container_name: laravel_queue
+        restart: always
+        volumes:
+            - .:/var/www
+        command: ["sh", "-c", "php artisan queue:work --queue=high,default"]
         depends_on:
             - mysql
             - php-fpm

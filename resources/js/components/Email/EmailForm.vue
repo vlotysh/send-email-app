@@ -38,30 +38,28 @@ import { useEmailStore } from '../../stores/emailStore';
 export default {
     props: {
         email: Object,
-        sendNow: Boolean,
     },
     setup(props, {emit}) {
         const emailStore = useEmailStore();
         const localEmail = ref({...props.email});
-        const localSendNow = ref(props.sendNow);
+        const localSendNow = ref(false);
         const errorMessage = ref('');
 
         watch(props.email, (newEmail) => {
             localEmail.value = {...newEmail};
         });
 
-        watch(props.sendNow, (newSendNow) => {
-            localSendNow.value = newSendNow;
-        });
-
         const submitForm = async () => {
             errorMessage.value = '';
+
+            let data = localEmail.value;
+            data.scheduled_time = new Date(data.scheduled_time).toISOString();
 
             try {
                 if (localEmail.value.id) {
                     await emailStore.updateEmail(localEmail.value);
                 } else {
-                    await emailStore.createEmail({ ...localEmail.value, send_now: localSendNow.value });
+                    await emailStore.createEmail({ ...data, send_now: localSendNow.value });
                 }
                 emit('formSubmitted');
                 emit('closeForm')

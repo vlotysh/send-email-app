@@ -28,5 +28,6 @@ class Email extends Model
 
     protected $casts = [
         'status' => EmailStatus::class,
+        'scheduled_time' => 'immutable_datetime',
     ];
 }

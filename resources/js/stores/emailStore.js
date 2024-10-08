@@ -3,7 +3,7 @@ import axios from 'axios';
 
 let handleError = function (text, error, state) {
     console.error(text + ':', error);
-    state.errorMessage = text + '. Error: ' + error.response.data.error;
+    state.errorMessage = text + ' Error: ' + error.response.data.error;
 }
 
 export const useEmailStore = defineStore('emailStore', {

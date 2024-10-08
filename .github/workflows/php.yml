@@ -1,0 +1,39 @@
+name: PHP CI Check app
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      PHP_VERSION: '8.2'
+      COMPOSER_CACHE_DIR: ${{ github.workspace }}/.composer
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          tools: composer, phpunit, phpcs, phpmd
+          coverage: none
+
+      - name: Install Dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Run LINT
+        run: composer lint
+
+      - name: Run PHPUnit
+        run: composer PHPUnit
+

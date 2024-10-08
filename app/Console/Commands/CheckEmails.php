@@ -8,6 +8,10 @@ use App\Models\Email;
 use App\Jobs\SendEmailJob;
 use Carbon\Carbon;
 
+/**
+ * @SuppressWarnings(PHPMD.StaticAccess)
+ * @SuppressWarnings(PHPMD.ShortVariable)
+ */
 class CheckEmails extends Command
 {
     /**

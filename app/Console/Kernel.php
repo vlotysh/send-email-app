@@ -10,6 +10,7 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      * @param Schedule $schedule
      * @return void
      */

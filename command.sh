@@ -37,7 +37,7 @@ down)
 
 tests)
     shift
-    command_docker run -it --rm artisan php artisan test "$@"
+    command_docker run -it --rm toolbox php artisan test "$@"
     ;;
 stop)
     shift
@@ -49,7 +49,7 @@ restart)
     ;;
 artisan)
     shift
-    command_docker run -it --rm artisan php artisan "$@"
+    command_docker run -it --rm toolbox php artisan "$@"
     ;;
 dev-front)
     shift
